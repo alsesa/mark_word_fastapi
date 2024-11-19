@@ -135,7 +135,3 @@ docker run -d -p 8000:8000 --name wordmark-app wordmark-app
 ## 许可证
 
 本项目使用 [MIT 许可证](LICENSE)。详见 LICENSE 文件。
-
----
-
-通过以上内容，`README.md` 清晰地介绍了项目功能、使用方法和部署步骤，方便开发者和用户快速上手。
