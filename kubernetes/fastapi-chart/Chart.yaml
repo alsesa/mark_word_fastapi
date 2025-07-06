@@ -1,0 +1,5 @@
+apiVersion: v2
+name: fastapi-k8s-app
+description: A Helm chart for deploying FastAPI application on Kubernetes
+version: 0.1.0 # Chart 版本
+appVersion: "1.0.0" # 应用版本，通常与镜像版本关联
