@@ -1,150 +1,156 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>词性标注工具</title>
     <style>
-        /* 全局样式 */
-        body {
-            font-family: "PingFang SC", "Microsoft YaHei", "Source Han Sans", Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
+      /* 全局样式 */
+      body {
+        font-family: "PingFang SC", "Microsoft YaHei", "Source Han Sans", Arial,
+          sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+      }
 
-        /* 页面容器 */
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+      /* 页面容器 */
+      .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
 
-        /* 标题样式 */
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
+      /* 标题样式 */
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+      }
 
-        /* 切换按钮样式 */
-        .switch-buttons {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+      /* 切换按钮样式 */
+      .switch-buttons {
+        text-align: center;
+        margin-bottom: 20px;
+      }
 
-        .switch-buttons button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 14px;
-            cursor: pointer;
-            margin: 0 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
+      .switch-buttons button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+        margin: 0 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
 
-        .switch-buttons button:hover {
-            background-color: #0056b3;
-        }
+      .switch-buttons button:hover {
+        background-color: #0056b3;
+      }
 
-        /* 输入框容器 */
-        .input-container {
-            display: none;
-        }
+      /* 输入框容器 */
+      .input-container {
+        display: none;
+      }
 
-        .input-container.active {
-            display: block !important;
-        }
+      .input-container.active {
+        display: block !important;
+      }
 
-        /* 表单元素 */
-        label {
-            font-size: 14px;
-            color: #555;
-            margin-bottom: 8px;
-            display: block;
-        }
+      /* 表单元素 */
+      label {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 8px;
+        display: block;
+      }
 
-        input[type="file"],
-        textarea {
-            width: 97%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
+      input[type="file"],
+      textarea {
+        width: 97%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
 
-        /* 提交按钮右对齐 */
-        .form-actions {
-            text-align: right;
-        }
+      /* 提交按钮右对齐 */
+      .form-actions {
+        text-align: right;
+      }
 
-        button[type="submit"] {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
+      button[type="submit"] {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
 
-        button[type="submit"]:hover {
-            background-color: #218838;
-        }
+      button[type="submit"]:hover {
+        background-color: #218838;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>词性标注工具</h1>
+      <h1>词性标注工具</h1>
 
-        <!-- 切换方式 -->
-        <div class="switch-buttons">
-            <button onclick="toggleInputMethod('file')">上传文件</button>
-            <button onclick="toggleInputMethod('text')">粘贴文本</button>
-        </div>
+      <!-- 切换方式 -->
+      <div class="switch-buttons">
+        <button onclick="toggleInputMethod('file')">上传文件</button>
+        <button onclick="toggleInputMethod('text')">粘贴文本</button>
+      </div>
 
-        <!-- 文件上传 -->
-        <div id="file-upload-container" class="input-container active">
-            <form action="/process" method="post" enctype="multipart/form-data">
-                <label for="file">选择文件：</label>
-                <input type="file" name="file" id="file">
-                <div class="form-actions">
-                    <button type="submit">提交文本</button>
-                </div>
-            </form>
-        </div>
+      <!-- 文件上传 -->
+      <div id="file-upload-container" class="input-container active">
+        <form action="/process" method="post" enctype="multipart/form-data">
+          <label for="file">选择文件：</label>
+          <input type="file" name="file" id="file" />
+          <div class="form-actions">
+            <button type="submit">提交文本</button>
+          </div>
+        </form>
+      </div>
 
-        <!-- 粘贴文本 -->
-        <div id="text-paste-container" class="input-container">
-            <form action="/process" method="post">
-                <label for="text">粘贴文本：</label>
-                <textarea name="text" id="text" rows="10" placeholder="在这里粘贴要处理的文本"></textarea>
-                <div class="form-actions">
-                    <button type="submit">提交文本</button>
-                </div>
-            </form>
-        </div>
+      <!-- 粘贴文本 -->
+      <div id="text-paste-container" class="input-container">
+        <form action="/process" method="post">
+          <label for="text">粘贴文本：</label>
+          <textarea
+            name="text"
+            id="text"
+            rows="10"
+            placeholder="在这里粘贴要处理的文本"
+          ></textarea>
+          <div class="form-actions">
+            <button type="submit">提交文本</button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <script>
-        function toggleInputMethod(method) {
-            const fileContainer = document.getElementById("file-upload-container");
-            const textContainer = document.getElementById("text-paste-container");
-            if (method === "file") {
-                fileContainer.classList.add("active");
-                textContainer.classList.remove("active");
-            } else {
-                textContainer.classList.add("active");
-                fileContainer.classList.remove("active");
-            }
+      function toggleInputMethod(method) {
+        const fileContainer = document.getElementById("file-upload-container");
+        const textContainer = document.getElementById("text-paste-container");
+        if (method === "file") {
+          fileContainer.classList.add("active");
+          textContainer.classList.remove("active");
+        } else {
+          textContainer.classList.add("active");
+          fileContainer.classList.remove("active");
         }
+      }
     </script>
-</body>
+  </body>
 </html>
