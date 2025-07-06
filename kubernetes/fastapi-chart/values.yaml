@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: docker.io/fastapi-k8s-app # <-- 替换为你的容器注册表路径和镜像名称
+  repository: docker.io/lostecho6174/mark_word_fastapi # <-- 替换为你的容器注册表路径和镜像名称
   pullPolicy: IfNotPresent
   tag: "initial" # <-- TeamCity 将会更新这个标签
 
