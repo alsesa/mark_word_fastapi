@@ -2,7 +2,7 @@ replicaCount: 1
 image:
   repository: docker.io/lostecho6174/mark_word_fastapi # <-- 替换为你的容器注册表路径和镜像名称
   pullPolicy: IfNotPresent
-  tag: "26" # <-- TeamCity 将会更新这个标签
+  tag: "27" # <-- TeamCity 将会更新这个标签
 service:
   type: ClusterIP # 或 LoadBalancer，根据你的需求
   port: 8000
