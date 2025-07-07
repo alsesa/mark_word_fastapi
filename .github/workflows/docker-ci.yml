@@ -1,0 +1,82 @@
+# .github/workflows/ci-cd.yml
+
+name: CI - Build and Push Docker Image & Update Helm Chart
+
+# 当有代码推送到 main 分支时触发此工作流
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 使用最新的 Ubuntu 运行环境
+
+    steps:
+      # 步骤 1: 检出你的代码
+      # 使用 actions/checkout@v4 来获取仓库代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        # 为了能推送回git仓库，我们需要获取提交的权限
+        # GITHUB_TOKEN 是由 GitHub 自动生成的，你需要在仓库设置中给予它写权限
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # 步骤 2: 登录到 Docker Hub
+      # 使用 docker/login-action，它会安全地处理你的凭据
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 步骤 3: 设置 Docker Buildx
+      # 这是 docker/build-push-action 的推荐设置
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 步骤 4: 构建并推送 Docker 镜像
+      # 这个 Action 会将构建和推送合并为一步
+      # 我们使用 github.sha (当前提交的SHA值) 作为镜像标签，这是最佳实践，保证了标签的唯一性和可追溯性
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v5
+        with:
+          context: . # Dockerfile 所在的上下文路径
+          file: ./Dockerfile # Dockerfile 的路径 (如果不是默认名)
+          push: true # 确认要推送
+          tags: ${{ secrets.DOCKER_REGISTRY_URL }}/mark_word_fastapi:${{ github.sha }}, ${{ secrets.DOCKER_REGISTRY_URL }}/mark_word_fastapi:latest
+
+      # 步骤 5: 更新 Helm values.yaml 文件
+      - name: Update Helm values file
+        # 这个复合步骤包含了安装yq、修改文件、配置git和提交推送的所有操作
+        run: |
+          # 定义新镜像的标签为当前 commit SHA
+          IMAGE_TAG=${{ github.sha }}
+
+          echo "New image tag is: $IMAGE_TAG"
+
+          # 1. 安装 yq 工具 (使用社区提供的 Action 会更简洁，但这里为了和您的脚本保持一致，采用手动安装)
+          echo "Installing yq..."
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+          yq --version
+
+          # 2. 使用 yq 更新 values.yaml
+          echo "Updating Helm chart values..."
+          yq e '.image.tag = "'$IMAGE_TAG'"' -i kubernetes/fastapi-chart/values.yaml
+
+          # 3. 配置 Git 用户信息
+          echo "Configuring Git..."
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          # 4. 提交并推送变更
+          echo "Committing and pushing changes..."
+          git add kubernetes/fastapi-chart/values.yaml
+          # 检查是否有文件变更，避免在没有变更时创建空的 commit
+          if ! git diff --staged --quiet; then
+            git commit -m "CI: Update image tag to ${IMAGE_TAG}"
+            git push
+          else
+            echo "No changes to commit."
+          fi
