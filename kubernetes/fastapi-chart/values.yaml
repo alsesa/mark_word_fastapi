@@ -7,3 +7,14 @@ service:
   type: ClusterIP # 或 LoadBalancer，根据你的需求
   port: 8000
 # 更多配置可以按需添加，例如 resources, probes 等
+ingress:
+  enabled: true
+  className: traefik # K3s 默认使用 Traefik
+  host: markword.simpla.dev # <-- 替换为你希望访问的域名
+  # 或者使用 Node IP 直接访问
+  # path: /
+  # pathType: Prefix
+  # tls:
+  #   - hosts:
+  #       - markword.simpla.dev
+  #     secretName: fastapi-tls-secret # 你的TLS Secret名称

@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "fastapi-k8s-app.fullname" . }}
+  name: {{ include "mark-word-fastapi.fullname" . }}
   labels:
-    {{- include "fastapi-k8s-app.labels" . | nindent 4 }}
+    {{- include "mark-word-fastapi.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "fastapi-k8s-app.selectorLabels" . | nindent 6 }}
+      {{- include "mark-word-fastapi.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "fastapi-k8s-app.selectorLabels" . | nindent 8 }}
+        {{- include "mark-word-fastapi.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
