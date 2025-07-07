@@ -18,7 +18,7 @@ WordMark 是一个基于 FastAPI 和 THULAC 的词性标注工具。用户可以
 
 ```
 project/
-├── app.py                # FastAPI 项目入口
+├── main.py                # FastAPI 项目入口
 ├── Dockerfile            # Docker 配置文件
 ├── requirements.txt      # Python 包依赖文件
 ├── templates/            # HTML 模板文件夹
