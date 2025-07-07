@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "mark-word-fastapi.fullname" . }}
+  name: {{ include "fastapi-k8s-app.fullname" . }}
   labels:
-    {{- include "mark-word-fastapi.labels" . | nindent 4 }}
+    {{- include "fastapi-k8s-app.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "mark-word-fastapi.selectorLabels" . | nindent 4 }}
+    {{- include "fastapi-k8s-app.selectorLabels" . | nindent 4 }}

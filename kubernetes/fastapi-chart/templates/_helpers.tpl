@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "mark-word-fastapi.name" -}}
+{{- define "fastapi-k8s-app.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "mark-word-fastapi.fullname" -}}
+{{- define "fastapi-k8s-app.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as part of the label.
 */}}
-{{- define "mark-word-fastapi.chart" -}}
+{{- define "fastapi-k8s-app.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "mark-word-fastapi.labels" -}}
-helm.sh/chart: {{ include "mark-word-fastapi.chart" . }}
-{{ include "mark-word-fastapi.selectorLabels" . }}
+{{- define "fastapi-k8s-app.labels" -}}
+helm.sh/chart: {{ include "fastapi-k8s-app.chart" . }}
+{{ include "fastapi-k8s-app.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,7 +45,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "mark-word-fastapi.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "mark-word-fastapi.name" . }}
+{{- define "fastapi-k8s-app.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "fastapi-k8s-app.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
