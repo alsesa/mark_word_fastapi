@@ -1,4 +1,4 @@
-# kubernetes/fastapi-chart/templates/ingress.yaml
+# kubernetes/mark-word-fastapi-chart/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

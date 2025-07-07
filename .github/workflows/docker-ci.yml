@@ -63,7 +63,7 @@ jobs:
 
           # 2. 使用 yq 更新 values.yaml
           echo "Updating Helm chart values..."
-          yq e '.image.tag = "'$IMAGE_TAG'"' -i kubernetes/fastapi-chart/values.yaml
+          yq e '.image.tag = "'$IMAGE_TAG'"' -i kubernetes/mark-word-fastapi-chart/values.yaml
 
           # 3. 配置 Git 用户信息
           echo "Configuring Git..."
@@ -72,7 +72,7 @@ jobs:
 
           # 4. 提交并推送变更
           echo "Committing and pushing changes..."
-          git add kubernetes/fastapi-chart/values.yaml
+          git add kubernetes/mark-word-fastapi-chart/values.yaml
           # 检查是否有文件变更，避免在没有变更时创建空的 commit
           if ! git diff --staged --quiet; then
             git commit -m "CI: Update image tag to ${IMAGE_TAG}"
